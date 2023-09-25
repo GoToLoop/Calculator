@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Calculator</title>
+  <meta charset="utf-8">
+
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body onload="document.getElementById('calculator').focus()">
+
+  <script async src="calculator.js"></script>
+
+  <div id="calculator" tabindex="-999">
+
+    <span id="display">0</span>
+
+    <button class="delete" id="ce">CE</button>
+    <button class="delete" id="ac">C</button>
+    <button class="operator unary" id="negate">±</button>
+    <button class="operator dyadic" id="pow">xⁿ</button>
+    <button class="operator unary" id="sqrt">√</button>
+
+    <button class="digit common key" id="seven">7</button>
+    <button class="digit common key" id="eight">8</button>
+    <button class="digit common key" id="nine">9</button>
+    <button class="operator dyadic key" id="divide">/</button>
+    <button class="operator unary" id="percent">%</button>
+
+    <button class="digit common key" id="four">4</button>
+    <button class="digit common key" id="five">5</button>
+    <button class="digit common key" id="six">6</button>
+    <button class="operator dyadic key" id="multiply">*</button>
+    <button class="operator unary" id="reciprocal">1/x</button>
+
+    <button class="digit common key" id="one">1</button>
+    <button class="digit common key" id="two">2</button>
+    <button class="digit common key" id="three">3</button>
+    <button class="operator dyadic key" id="minus">-</button>
+    <button class="operator unary key" id="equals">=</button>
+
+    <button class="digit key" id="zero">0</button>
+    <button class="digit key" id="decimal">.</button>
+    <button class="operator dyadic key" id="plus">+</button>
+
+  </div>
+
+</body>
+
+</html>

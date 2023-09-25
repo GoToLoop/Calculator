@@ -1,0 +1,42 @@
+#calculator {
+  display: grid;
+  grid-template: repeat(6, 1fr) / repeat(5, 1fr);
+  max-width: 400px;
+  gap: 10px;
+  border: 3px solid;
+  padding: 10px;
+}
+
+#calculator button {
+  font-size: larger;
+}
+
+#calculator button:hover {
+  filter: brightness(1.1);
+}
+
+#display {
+  grid-column: span 5;
+  border: 2px solid;
+  text-align: right;
+  padding: 10px;
+  font-size: xx-large;
+  background-color: lightgreen;
+}
+
+#equals {
+  grid-row: span 2;
+  background-color: gold;
+}
+
+#zero {
+  grid-column: span 2;
+}
+
+.delete {
+  background-color: crimson;
+}
+
+.operator {
+  background-color: lightgray;
+}
