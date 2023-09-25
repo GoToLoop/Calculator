@@ -7,7 +7,7 @@
 var op = '+', result = 0, isShowResult = true;
 
 const KEY = 'keydown', CLICK = 'click', MAX_CHARS = 23;
-const ZERO = '0', DOT = '.', NEG = '-';
+const ZERO = '0', DOT = '.', NEG = '-', EMPTY = '';
 
 const calc = /** @type {HTMLDivElement} */
   (document.getElementById('calculator'));
@@ -32,7 +32,8 @@ calc.addEventListener(KEY, btnKeyEvent);
  *
  * @description Firstly it checks if backspace key was pressed.
  * If so, it invokes function deleteLastChar() to delete previous char entered.
- * Secondly it checks if delete key was pressed and invokes btnClearEntryEvent()
+ * Secondly it checks if Insert key was pressed and invokes btnNegateEvent().
+ * Thirdly it checks if delete key was pressed and invokes btnClearEntryEvent()
  * if that's the case, thus behaving the same as the CE's #ce `button`.
  * Then it checks if the event is not a 'repeat'.
  * If it's not a 'repeat', it iterates over each .key `button`.
@@ -42,6 +43,8 @@ calc.addEventListener(KEY, btnKeyEvent);
  */
 function btnKeyEvent({ key, keyCode, repeat }) {
   if (keyCode == 8) deleteLastChar(); // key: "Backspace" (ASCII 8)
+
+  else if (keyCode == 45) btnNegateEvent(); // key: "Insert" (ASCII 45)
 
   else if (keyCode == 46) btnClearEntryEvent(); // key: "Delete" (ASCII 46)
 
@@ -212,6 +215,62 @@ function btnNegateEvent() {
   if (isShowResult) result *= -1;
 
   display.textContent = head == NEG && innerText.substr(1) || NEG + innerText;
+}
+
+// ========================================================================== \\
+
+document.getElementById('sqrt')?.addEventListener(CLICK, btnSqrtEvent);
+
+/**
+ * Handles the 'click' event of the #sqrt `button` element.
+ * Calculates square root of the current value on the #calculator's #display.
+ *
+ * @description This callback triggers when #sqrt `button` is clicked.
+ * If `isShowResult` is true, it calculates the square root of the result.
+ * Then it calculates and displays the square root of the current display value.
+ */
+function btnSqrtEvent() {
+  if (isShowResult) result = Math.sqrt(result) || 0;
+  display.textContent = (Math.sqrt(+display.innerText) || 0) + EMPTY;
+}
+
+// ========================================================================== \\
+
+document.getElementById('percent')?.addEventListener(CLICK, btnPercentEvent);
+
+/**
+ * Handles the 'click' event of the #percent `button` element.
+ * Calculates percentage of the current value on the #calculator's #display
+ * relative to the result.
+ *
+ * @description This callback triggers when #percent `button` is clicked.
+ * If `isShowResult` is true, it does nothing.
+ * Otherwise, it calculates and displays the percentage of the current display
+ * value relative to the result.
+ */
+function btnPercentEvent() {
+  if (isShowResult) return;
+  display.textContent = +display.innerText * result / 100 + EMPTY;
+}
+
+// ========================================================================== \\
+
+document.getElementById('reciprocal')?.addEventListener(CLICK, btnInverseEvent);
+
+/**
+ * Handles the 'click' event of the #reciprocal `button` element.
+ * Calculates reciprocal (1/x) of current value on the #calculator's #display.
+ *
+ * @description This callback triggers when #reciprocal `button` is clicked.
+ * If `isShowResult` is true, it calculates the reciprocal of the result.
+ * Then it calculates and displays the reciprocal of the current display value.
+ */
+function btnInverseEvent() {
+  var r;
+
+  if (isShowResult) result = isFinite(r = 1 / result) ? r : 0;
+
+  display.textContent = (isFinite(r = 1 / +display.innerText) ? r : 0) + EMPTY;
 }
 
 // ========================================================================== \\
