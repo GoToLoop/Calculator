@@ -4,7 +4,7 @@
 
 // ========================================================================== \\
 
-var op = '+', result = 0, isShowResult = true;
+var op = '+', entry = 0, result = 0, isShowResult = true;
 
 const KEY = 'keydown', CLICK = 'click', MAX_CHARS = 23;
 const ZERO = '0', DOT = '.', NEG = '-', EMPTY = '';
@@ -14,6 +14,14 @@ const calc = /** @type {HTMLDivElement} */
 
 const display = /** @type {HTMLSpanElement} */
   (document.getElementById('display'));
+
+/**
+ * Resets the state back to entry mode.
+ */
+function activateEntryState() {
+  isShowResult = false;
+  result = entry = 0;
+}
 
 // ========================================================================== \\
 
@@ -54,7 +62,7 @@ function btnKeyEvent({ key, keyCode: k, repeat }) {
   else if (k == 46) btnClearEntryEvent(); // key: "Delete" (ASCII 46)
 
   else for (const btn of keyButtons) if (key == btn.textContent) {
-    btn.click(); // for the rest use the key matching .key button's content
+    btn.click(); // for the rest, use the key matching .key button's content
     break; // and then stop the checking loop after a match is found
   }
 }
@@ -104,7 +112,7 @@ function btnCommonEvent() {
   const { innerText: { 0: head, length: len } } = display, { innerText } = this;
 
   if (isShowResult) {
-    isShowResult = false;
+    activateEntryState();
     display.textContent = innerText;
   }
 
@@ -128,7 +136,7 @@ document.getElementById('zero')?.addEventListener(CLICK, btnZeroEvent);
  */
 function btnZeroEvent() {
   if (isShowResult) {
-    isShowResult = false;
+    activateEntryState();
     display.textContent = ZERO;
     return;
   }
@@ -153,7 +161,7 @@ document.getElementById('decimal')?.addEventListener(CLICK, btnDotEvent);
  */
 function btnDotEvent() {
   if (isShowResult) {
-    isShowResult = false;
+    activateEntryState();
     display.textContent = '0.';
     return;
   }
@@ -177,7 +185,8 @@ document.getElementById('ac')?.addEventListener(CLICK, btnAllClearEvent);
  * It also sets the text content of the #display `span` element back to '0'.
  */
 function btnAllClearEvent() {
-  op = '+', result = 0, isShowResult = true;
+  activateEntryState();
+  op = '+';
   display.textContent = ZERO;
 }
 
