@@ -32,25 +32,30 @@ calc.addEventListener(KEY, btnKeyEvent);
  *
  * @description Firstly it checks if backspace key was pressed.
  * If so, it invokes function deleteLastChar() to delete previous char entered.
- * Secondly it checks if Insert key was pressed and invokes btnNegateEvent().
- * Thirdly it checks if delete key was pressed and invokes btnClearEntryEvent()
+ * Then it checks if the event is a 'repeat'. If it's so, it returns.
+ * Then it checks if Enter or Return key was pressed and calls btnEqualsEvent().
+ * After that, it checks if Insert key was pressed and invokes btnNegateEvent().
+ * Lastly, it checks if delete key was pressed and invokes btnClearEntryEvent()
  * if that's the case, thus behaving the same as the CE's #ce `button`.
- * Then it checks if the event is not a 'repeat'.
- * If it's not a 'repeat', it iterates over each .key `button`.
- * If the 'key' property of the event matches the `textContent` of the
- * current `button`, it triggers a 'click' event on that `button`.
+ * If none of the above conditions are met, it iterates over each .key `button`.
+ * If the 'key' property of the event matches the `textContent` of current
+ * `button`, it triggers a 'click' event on that `button`.
  * It also prematurely `break` the loop after the first match.
  */
-function btnKeyEvent({ key, keyCode, repeat }) {
-  if (keyCode == 8) deleteLastChar(); // key: "Backspace" (ASCII 8)
+function btnKeyEvent({ key, keyCode: k, repeat }) {
+  if (k == 8) deleteLastChar(); // key: "Backspace" (ASCII 8)
 
-  else if (keyCode == 45) btnNegateEvent(); // key: "Insert" (ASCII 45)
+  else if (repeat) return; // only "Backspace" is allowed to be held down
 
-  else if (keyCode == 46) btnClearEntryEvent(); // key: "Delete" (ASCII 46)
+  else if (k == 10 || k == 13) btnEqualsEvent(); // keys: "Enter" or "Return"
 
-  else if (!repeat) for (const btn of keyButtons) if (key == btn.textContent) {
-    btn.click();
-    break;
+  else if (k == 45) btnNegateEvent(); // key: "Insert" (ASCII 45)
+
+  else if (k == 46) btnClearEntryEvent(); // key: "Delete" (ASCII 46)
+
+  else for (const btn of keyButtons) if (key == btn.textContent) {
+    btn.click(); // for the rest use the key matching .key button's content
+    break; // and then stop the checking loop after a match is found
   }
 }
 
@@ -240,7 +245,7 @@ document.getElementById('percent')?.addEventListener(CLICK, btnPercentEvent);
 
 /**
  * Handles the 'click' event of the #percent `button` element.
- * Calculates percentage of the current value on the #calculator's #display
+ * Calculates percentage (%) of the current value on the #calculator's #display
  * relative to the result.
  *
  * @description This callback triggers when #percent `button` is clicked.
@@ -266,11 +271,19 @@ document.getElementById('reciprocal')?.addEventListener(CLICK, btnInverseEvent);
  * Then it calculates and displays the reciprocal of the current display value.
  */
 function btnInverseEvent() {
-  var r;
+  var r = 0;
 
   if (isShowResult) result = isFinite(r = 1 / result) ? r : 0;
 
   display.textContent = (isFinite(r = 1 / +display.innerText) ? r : 0) + EMPTY;
+}
+
+// ========================================================================== \\
+
+document.getElementById('equals')?.addEventListener(CLICK, btnEqualsEvent);
+
+function btnEqualsEvent() {
+
 }
 
 // ========================================================================== \\
