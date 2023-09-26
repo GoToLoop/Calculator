@@ -23,6 +23,14 @@ function activateEntryState() {
   result = entry = 0;
 }
 
+/**
+ * Prepare partial result mode.
+ */
+function activateResultState() {
+  isShowResult = true;
+  entry = +display.innerText;
+}
+
 // ========================================================================== \\
 
 const keyButtons = /** @type {HTMLCollectionOf<HTMLButtonElement>} */
